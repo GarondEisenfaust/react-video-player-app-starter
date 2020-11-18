@@ -1,4 +1,5 @@
 {
+  "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh",
   "appId": "com.jeep.app.ionic.react.videoplayer",
   "appName": "react-video-player-app-starter",
   "bundledWebRuntime": false,

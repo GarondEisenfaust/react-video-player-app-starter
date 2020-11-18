@@ -11,7 +11,7 @@
     "application starter"
   ],
   "dependencies": {
-    "@capacitor-community/electron": "^1.2.3",
+    "@capacitor-community/electron": "^1.3.1",
     "@capacitor-community/react-hooks": "0.0.11",
     "@capacitor/android": "^2.4.2",
     "@capacitor/core": "^2.4.2",

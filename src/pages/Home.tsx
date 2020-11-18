@@ -1,26 +1,35 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton,
-  IonList, IonItem, useIonViewWillEnter, useIonViewDidEnter } from '@ionic/react';
-import React, {useState, useEffect, useRef} from 'react';
-import { useStorage } from '@capacitor-community/react-hooks/storage';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonList,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  useIonViewWillEnter
+} from '@ionic/react';
+import React, {useEffect, useRef, useState} from 'react';
+import {useStorage} from '@capacitor-community/react-hooks/storage';
 
 import './Home.css';
-import { Capacitor } from '@capacitor/core';
-import { useHistory, RouteComponentProps } from 'react-router-dom';
+import {Capacitor} from '@capacitor/core';
+import {RouteComponentProps, useHistory} from 'react-router-dom';
 
 
 const Home: React.FC<RouteComponentProps> = () => {
   const platform = Capacitor.getPlatform();
   var api: any = useRef<boolean>(false);
-  const [type,setType] = useState("");
+  const [type, setType] = useState("");
   const useApi = () => {
     console.log("==> in useApi before setApi api " + api.current)
-    api.current = ! api.current;
+    api.current = !api.current;
     console.log("==> in useApi after setApi api " + api.current)
   }
   const history = useHistory();
   const {set} = useStorage();
 
-  useIonViewWillEnter( () => {
+  useIonViewWillEnter(() => {
     console.log("in useIonViewWillEnter '" + type + "'")
     setType("");
     api.current = false;
@@ -28,14 +37,14 @@ const Home: React.FC<RouteComponentProps> = () => {
 //  useIonViewDidEnter( async () => {
 //    await launchFullscreen();
 //  });
-  useEffect( () => {
-    async function launchFullscreen(): Promise<void>  {
+  useEffect(() => {
+    async function launchFullscreen(): Promise<void> {
 
-    console.log("in lauchFullscreen type '" + type + "'")
-    console.log("in lauchFullscreen api '" + api.current + "'")
+      console.log("in lauchFullscreen type '" + type + "'")
+      console.log("in lauchFullscreen api '" + api.current + "'")
 
       let url: string = "";
-      if(type === "mp4") {
+      if (type === "mp4") {
         url = "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4?alt=media&token=a8abafa7-5fd9-4179-be5f-1963a5b60d51";
       } else if (type === "webm") {
         url = "https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f1/Sintel_movie_4K.webm/Sintel_movie_4K.webm.720p.webm";
@@ -48,7 +57,7 @@ const Home: React.FC<RouteComponentProps> = () => {
       } else if (type === "aws") {
         url = "https://universo-dev-a-m.s3.amazonaws.com/779970/fe774806dbe7ad042c24ce522b7b46594f16c66e";
       } else if (type === 'application') {
-        url = "application/files/bigbuckbunny.mp4";
+        url = "application/files/video.mp4";
       } else if (type === 'internal') {
         url = "internal";
       } else if (type === 'asset' && platform === 'ios') {
@@ -69,13 +78,14 @@ const Home: React.FC<RouteComponentProps> = () => {
         state: params
       })
       */
-     // work around by using Storage
-     await set('url', url);
-     await set('api', api.current ? "true" : "false");
-     history.push('/fullscreen');
+      // work around by using Storage
+      await set('url', url);
+      await set('api', api.current ? "true" : "false");
+      history.push('/fullscreen');
     }
-    if(type.length >  0) launchFullscreen();
-  },[ api, platform, history, type, set]);
+
+    if (type.length > 0) launchFullscreen();
+  }, [api, platform, history, type, set]);
 
   return (
     <IonPage>
@@ -100,10 +110,13 @@ const Home: React.FC<RouteComponentProps> = () => {
           <IonItem>
             <IonButton onClick={() => setType("hls")} expand="block">Test Fullscreen HLS Video</IonButton>
           </IonItem>
+          <IonItem>
+            <IonButton onClick={() => setType("asset")} expand="block">Test Fullscreen Asset</IonButton>
+          </IonItem>
           {(platform === 'android') &&
-            <IonItem >
+          <IonItem>
               <IonButton onClick={() => setType("mpd")} expand="block">Test Fullscreen DASH MPD Video</IonButton>
-            </IonItem>
+          </IonItem>
           }
         </IonList>
       </IonContent>
